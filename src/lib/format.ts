@@ -2,7 +2,7 @@ import { differenceInCalendarDays, format, isValid, parseISO } from 'date-fns';
 
 const fmtCache = new Map<string, Intl.NumberFormat>();
 
-export function formatMoney(amount: number, currency = 'USD', compact = false): string {
+export function formatMoney(amount: number, currency = 'PHP', compact = false): string {
   const key = `${currency}-${compact}`;
   let f = fmtCache.get(key);
   if (!f) {

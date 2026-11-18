@@ -38,7 +38,7 @@ const compensation = z.object({
   type: z.enum(COMPENSATION_TYPE_IDS).catch('other'),
   label: opt(str),
   amount: z.coerce.number().catch(0),
-  currency: z.string().default('USD'),
+  currency: z.string().default('PHP'),
   status: z.enum(PAYMENT_STATUS_IDS).catch('unpaid'),
   dueDate: opt(str),
   invoicedAt: opt(str),

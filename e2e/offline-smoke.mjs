@@ -134,6 +134,7 @@ const [csv] = await Promise.all([page.waitForEvent('download'), page.getByRole('
 const csvText = readFileSync(await csv.path(), 'utf8');
 assert.match(csvText, /Orbit Energy/);
 assert.match(csvText, /2500/);
+assert.match(csvText, /PHP/);
 step('report generated and CSV exported');
 await shot(page, '05-report');
 

@@ -55,7 +55,7 @@ export function summarize(collabs: Collab[], period: Period, now = new Date()): 
   for (const c of collabs) {
     const committed = COMMITTED_STAGES.includes(c.stage);
     for (const item of c.compensation) {
-      const cur = item.currency || 'USD';
+      const cur = item.currency || 'PHP';
       if (item.status === 'paid') {
         add(s.lifetimeEarned, cur, item.amount);
         if (within(parseDate(item.paidAt) ?? parseDate(c.updatedAt), range)) add(s.earned, cur, item.amount);

@@ -85,7 +85,7 @@ export const BRAND_KINDS: Record<BrandKind, string> = {
   creator: 'Creator',
 };
 
-export const CURRENCIES = ['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'PHP', 'JPY', 'INR', 'SGD', 'BRL', 'MXN'];
+export const CURRENCIES = ['PHP', 'USD', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY', 'INR', 'SGD', 'BRL', 'MXN'];
 
 export const DELIVERABLE_PRESETS = [
   'Draft script',

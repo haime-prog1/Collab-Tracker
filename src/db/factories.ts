@@ -3,7 +3,7 @@ import { nowISO, uid } from '@/lib/id';
 
 export const DEFAULT_SETTINGS: Settings = {
   id: 'app',
-  currency: 'USD',
+  currency: 'PHP',
   theme: 'dark',
   view: 'kanban',
   stageOverrides: {},

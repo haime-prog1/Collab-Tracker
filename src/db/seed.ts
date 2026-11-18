@@ -38,7 +38,7 @@ export function sampleData(now = new Date()) {
     id: uid(),
     type,
     amount,
-    currency: 'USD',
+    currency: 'PHP',
     status,
     paidAt,
     invoicedAt: status !== 'unpaid' ? d(-10) : undefined,
@@ -59,8 +59,8 @@ export function sampleData(now = new Date()) {
         { id: uid(), title: 'Video integration (60–90s)', platform: 'youtube', dueDate: d(5), done: false },
         { id: uid(), title: 'Instagram Reel', platform: 'instagram', dueDate: d(7), done: false },
       ],
-      compensation: [money(3500, 'unpaid'), money(800, 'unpaid', 'usage_rights')],
-      perks: [{ id: uid(), description: 'Nova Pro earbuds', estimatedValue: 249, received: true, receivedAt: d(-3) }],
+      compensation: [money(150000, 'unpaid'), money(40000, 'unpaid', 'usage_rights')],
+      perks: [{ id: uid(), description: 'Nova Pro earbuds', estimatedValue: 12000, received: true, receivedAt: d(-3) }],
       tags: ['launch'],
     }),
     newCollab({
@@ -71,7 +71,7 @@ export function sampleData(now = new Date()) {
       stage: 'negotiating',
       priority: 'medium',
       deadline: d(21),
-      compensation: [money(1800, 'unpaid')],
+      compensation: [money(90000, 'unpaid')],
       deliverables: [{ id: uid(), title: 'TikTok video ×3', platform: 'tiktok', dueDate: d(21), done: false }],
     }),
     newCollab({
@@ -81,7 +81,7 @@ export function sampleData(now = new Date()) {
       platforms: ['twitch'],
       stage: 'inbox',
       priority: 'low',
-      compensation: [money(1200, 'unpaid')],
+      compensation: [money(60000, 'unpaid')],
     }),
     newCollab({
       title: 'Co-op challenge video',
@@ -103,7 +103,7 @@ export function sampleData(now = new Date()) {
       priority: 'urgent',
       deadline: d(-1),
       deliverables: [{ id: uid(), title: 'Final cut sent for approval', done: true, link: 'https://drive.example.com/cut' }],
-      compensation: [money(2200, 'invoiced')],
+      compensation: [money(110000, 'invoiced')],
     }),
     newCollab({
       title: 'Cold brew summer Reel',
@@ -114,8 +114,8 @@ export function sampleData(now = new Date()) {
       priority: 'medium',
       publishedAt: ago(4),
       deliverables: [{ id: uid(), title: 'Instagram Reel', platform: 'instagram', done: true, link: 'https://instagram.com/p/example' }],
-      compensation: [money(950, 'paid', 'flat_fee', d(-2))],
-      perks: [{ id: uid(), description: 'Coffee subscription (3 mo)', estimatedValue: 90, received: true, receivedAt: d(-20) }],
+      compensation: [money(45000, 'paid', 'flat_fee', d(-2))],
+      perks: [{ id: uid(), description: 'Coffee subscription (3 mo)', estimatedValue: 4500, received: true, receivedAt: d(-20) }],
     }),
     newCollab({
       title: 'Speaker review (spring)',
@@ -124,7 +124,7 @@ export function sampleData(now = new Date()) {
       platforms: ['youtube'],
       stage: 'archived',
       priority: 'low',
-      compensation: [money(2800, 'paid', 'flat_fee', d(-60))],
+      compensation: [money(140000, 'paid', 'flat_fee', d(-60))],
     }),
   ].map((c, i) => ({ ...c, stageOrder: (i + 1) * 1024 }));
 
