@@ -14,6 +14,22 @@ An offline-first Progressive Web App for content creators to manage brand deals,
 - **Backup and restore:** export everything to a dated JSON file. On iOS installed apps it opens the Share sheet. Restore by **Replace all** or **Merge** (the newest edit wins per record). Imports are validated with zod. A reminder appears after 14 days without a backup.
 - **PWA:** installable, with an install prompt on Android and desktop, Add to Home Screen instructions on iOS, a "new version available" prompt, an offline badge, and a request for persistent storage.
 
+## Calendar, dashboard, reports and search
+
+- **Calendar:** a month view of deliverable due dates, collab deadlines, payments due, payments received and publish dates. Each item shows the brand, the contact person (with an email shortcut), the amount, and a status label (To do · Done · Unpaid · Invoiced · Paid · Overdue). A monthly progress tracker shows deliverables done and payments collected, and an overdue counter jumps to the oldest overdue item. Payments can be marked paid from the calendar.
+- **Dashboard:** a summary line, quick actions (new collab, calendar, report, backup), KPI tiles (active deals, due in 7 days, awaiting payment, published this month), a 7-day strip, the earnings widget, *Payments to chase* and *Up next* lists, the pipeline overview and recently published deals.
+- **Reports:** choose a period (this/last month, quarter, year, last 12 months, all time, custom) and filter by brand or platform. You get KPIs, an earned-per-month chart (with a table view), breakdowns by brand (with contact person) and by platform, a pipeline snapshot, and a payments ledger. **Print / Save as PDF** gives a clean light layout. **Payments CSV** and **Brands CSV** download spreadsheet files. CSV cells are protected against spreadsheet formula injection.
+- **Search:** one search bar (`/` or `⌘K`) finds collabs, brands and contact people (by name, email or role), with keyboard navigation. On the Pipeline page it filters the board live.
+
+## Privacy: your data never goes in this repo
+
+This repository is **public**, and that's fine: it holds **only the app's source code**, plus obviously fake sample data in `src/db/seed.ts` (`example.com` addresses).
+
+- Your real collabs, brands, contacts and payments are saved **only in your browser's IndexedDB on your own device**. The app has no server, no account and no analytics, and it never sends your data anywhere. Publishing or redeploying the app cannot expose it.
+- Each person who opens the app gets their **own, separate, empty** local database. Visitors to your deployed site can't see your deals.
+- Backups (`collab-tracker-backup-*.json`) and report exports (`collab-tracker-*.csv`) **do** contain your private data. Keep them out of the repo: `.gitignore` already excludes those file names and the `/backups`, `/exports` and `/reports` folders. Store backups somewhere private (your device, a private cloud folder).
+- If you fork or contribute, never paste real deal data into issues, pull requests, test fixtures or screenshots.
+
 ## Tech stack
 
 Vite · React 18 · TypeScript (strict) · Tailwind CSS v4 · lucide-react · idb · @dnd-kit · zod · date-fns · vite-plugin-pwa (Workbox) · Vitest + fake-indexeddb · Playwright smoke test.
@@ -32,7 +48,7 @@ Quality checks:
 ```bash
 npm run typecheck
 npm run lint
-npm test             # unit tests: finance, search, store, backup round-trip
+npm test             # unit tests: finance, search, store, backup, calendar, reports, CSV
 npm run test:e2e     # offline smoke test against `npm run preview` (needs the `playwright` package + Chromium)
 ```
 
@@ -51,6 +67,9 @@ npm run test:e2e     # offline smoke test against `npm run preview` (needs the `
 
 ```
 src/
+  lib/calendar.ts        dated events (deliverables, payments, launches) + month progress
+  lib/report.ts          report math + CSV export
+  lib/globalSearch.ts    collab / brand / contact search
   types/models.ts        domain model (Collab, Brand, Deliverable, CompensationItem, Perk, Settings)
   db/schema.ts           IndexedDB schema + versioned migrations
   db/client.ts           connection, persistent-storage request
@@ -61,7 +80,7 @@ src/
   hooks/                 store selectors, install prompt, service worker, media queries
   state/ui.ts            search / filters / editor sheet state
   components/            layout, ui primitives, pipeline, collab editor, brands, finance, pwa
-  pages/                 Dashboard, Pipeline, Brands, BrandDetail, Finance (Money), Settings
+  pages/                 Dashboard, Pipeline, Calendar, Brands, BrandDetail, Finance (Money), Reports, Settings
 ```
 
 **Data flow.** On boot the whole dataset is loaded into an immutable in-memory snapshot. Components read it synchronously, so screens render instantly. Each mutation updates the snapshot, notifies subscribers, then commits to IndexedDB in a single transaction. If the write fails, the store re-reads from disk (rollback) and shows a toast. Other open tabs re-hydrate through a `BroadcastChannel`.

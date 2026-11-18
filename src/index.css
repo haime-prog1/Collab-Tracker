@@ -98,3 +98,21 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Printing / "Save as PDF" (Reports): light ink on white paper, no app chrome. */
+@media print {
+  :root,
+  .dark {
+    --c-bg: #ffffff;
+    --c-surface: #ffffff;
+    --c-elevated: #f4f4f6;
+    --c-line: #dcdce3;
+    --c-fg: #111114;
+    --c-muted: #4b4b55;
+    --c-subtle: #6b6b75;
+    color-scheme: light;
+  }
+  body { background: #fff !important; }
+  * { print-color-adjust: exact; -webkit-print-color-adjust: exact; box-shadow: none !important; }
+  @page { margin: 14mm; }
+}

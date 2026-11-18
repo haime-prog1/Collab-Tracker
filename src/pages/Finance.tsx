@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react';
 import { Gift, Wallet } from 'lucide-react';
 import { useCollabs, useSettings } from '@/hooks/useStore';
-import { saveCollab } from '@/db/store';
+import { setPaymentStatus } from '@/db/actions';
+import { Link } from 'react-router';
+import { BarChart3 } from 'lucide-react';
 import { COMPENSATION_TYPES, PAYMENT_STATUSES } from '@/lib/constants';
-import { DUE_TONE_CLASS, dueInfo, formatDate, formatMoney, toISODate } from '@/lib/format';
+import { DUE_TONE_CLASS, dueInfo, formatDate, formatMoney } from '@/lib/format';
 import { PAYMENT_STATUS_IDS, type Collab, type CompensationItem, type PaymentStatus } from '@/types/models';
 import { ui } from '@/state/ui';
 import { PageHeader, Card } from '@/components/ui/Card';
@@ -42,21 +44,21 @@ export default function Finance() {
 
   const advance = async ({ collab, item }: Row) => {
     const next = NEXT[item.status];
-    const today = toISODate(new Date());
-    await saveCollab({
-      ...collab,
-      compensation: collab.compensation.map((i) =>
-        i.id === item.id
-          ? { ...i, status: next, invoicedAt: next !== 'unpaid' ? (i.invoicedAt ?? today) : undefined, paidAt: next === 'paid' ? today : undefined }
-          : i,
-      ),
-    });
+    await setPaymentStatus(collab.id, item.id, next);
     if (next === 'paid') toast(`💸 ${formatMoney(item.amount, item.currency)} from ${collab.partnerName} marked paid`, { tone: 'success' });
   };
 
   return (
     <div className="space-y-5">
-      <PageHeader title="Money" subtitle="Payments, invoices & perks" />
+      <PageHeader
+        title="Money"
+        subtitle="Payments, invoices & perks"
+        actions={
+          <Link to="/reports" className="inline-flex h-11 items-center gap-2 rounded-xl bg-elevated px-4 text-sm font-medium ring-1 ring-line hover:bg-line/60">
+            <BarChart3 className="h-4 w-4 text-neon" /> Report
+          </Link>
+        }
+      />
       <EarningsSummary />
 
       <section>

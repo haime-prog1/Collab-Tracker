@@ -39,7 +39,7 @@ export function AppShell() {
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <TopBar />
-        <main className="mx-auto w-full max-w-[1600px] flex-1 px-4 pb-[calc(6.5rem+env(safe-area-inset-bottom))] pt-4 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] md:px-6 md:pb-10">
+        <main className="mx-auto w-full max-w-[1600px] flex-1 px-4 pb-[calc(6.5rem+env(safe-area-inset-bottom))] pt-4 pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] md:px-6 md:pb-10 print:max-w-none print:p-0">
           <Outlet />
         </main>
       </div>
@@ -47,7 +47,9 @@ export function AppShell() {
       <CollabEditorHost />
       <ConfirmHost />
       <UpdatePrompt />
-      <Toaster />
+      <div className="print:hidden">
+        <Toaster />
+      </div>
     </div>
   );
 }

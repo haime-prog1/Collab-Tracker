@@ -6,3 +6,14 @@ test-results
 playwright-report
 *.local
 .DS_Store
+
+# --- Privacy: never commit real collab data -------------------------------
+# This repo is public. Your deals live only in your browser (IndexedDB).
+# Exported backups / reports contain brand names, contacts and payment amounts.
+collab-tracker-backup-*.json
+collab-tracker-report-*.csv
+collab-tracker-*.csv
+*.backup.json
+/backups/
+/exports/
+/reports/

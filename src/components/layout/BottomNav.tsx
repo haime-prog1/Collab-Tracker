@@ -6,12 +6,12 @@ import { CountBadge } from '@/components/ui/Badge';
 import { NAV } from './nav';
 import { useNavBadges } from './useNavBadges';
 
-/** Mobile tab bar: 4 destinations + a central floating "new collab" button. Settings lives in the top bar. */
+/** Mobile tab bar: 5 destinations + a floating "new collab" button. Reports & Settings live in the top bar. */
 export function BottomNav() {
   const badges = useNavBadges();
-  const items = NAV.filter((n) => n.to !== '/settings');
-  const left = items.slice(0, 2);
-  const right = items.slice(2);
+  const items = NAV.filter((n) => n.mobile);
+  const left = items.slice(0, 3);
+  const right = items.slice(3);
 
   const renderItem = ({ to, label, icon: Icon }: (typeof NAV)[number]) => (
     <NavLink
@@ -20,7 +20,7 @@ export function BottomNav() {
       end={to === '/'}
       className={({ isActive }) =>
         cn(
-          'relative flex h-14 flex-1 flex-col items-center justify-center gap-0.5 text-[11px] font-medium transition active:scale-95',
+          'relative flex h-14 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 text-[10.5px] font-medium transition active:scale-95',
           isActive ? 'text-fg' : 'text-subtle',
         )
       }
@@ -40,7 +40,7 @@ export function BottomNav() {
   return (
     <nav
       aria-label="Main"
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/85 pb-safe pl-safe pr-safe backdrop-blur-xl md:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 print:hidden border-t border-line bg-surface/85 pb-safe pl-safe pr-safe backdrop-blur-xl md:hidden"
     >
       <div className="flex items-center">
         {left.map(renderItem)}
@@ -49,7 +49,7 @@ export function BottomNav() {
             type="button"
             aria-label="New collab"
             onClick={() => ui.openEditor()}
-            className="-mt-6 grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white shadow-xl shadow-violet-600/40 ring-4 ring-bg transition active:scale-90"
+            className="-mt-6 grid h-13 w-13 place-items-center rounded-2xl bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white shadow-xl shadow-violet-600/40 ring-4 ring-bg transition active:scale-90"
           >
             <Plus className="h-7 w-7" />
           </button>

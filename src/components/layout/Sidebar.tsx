@@ -12,7 +12,7 @@ import { InstallButton } from '@/components/pwa/InstallButton';
 export function Sidebar() {
   const badges = useNavBadges();
   return (
-    <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 flex-col gap-1 border-r border-line bg-surface/60 p-4 pt-[max(1rem,env(safe-area-inset-top))] md:flex">
+    <aside className="sticky top-0 hidden print:hidden h-dvh w-60 shrink-0 flex-col gap-1 border-r border-line bg-surface/60 p-4 pt-[max(1rem,env(safe-area-inset-top))] md:flex">
       <div className="mb-4 px-2">
         <Logo />
       </div>

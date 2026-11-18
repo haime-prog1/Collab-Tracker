@@ -102,6 +102,41 @@ await page.getByText('Collaboration history').waitFor();
 await page.getByText('Launch day integration').waitFor();
 step('brand directory shows collab history');
 
+// 8. Global search finds the brand's contact-free collab and the brand itself.
+await page.goto(`${BASE}/`);
+await page.getByRole('combobox').fill('orbit');
+await page.getByRole('option', { name: /Orbit Energy/ }).first().waitFor();
+step('global search shows grouped results');
+await page.keyboard.press('Escape');
+await page.getByRole('combobox').fill('');
+
+// 9. Calendar: a payment due today shows with brand, and "Mark paid" works.
+await page.evaluate(async () => {
+  const today = new Date();
+  const iso = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  const db = await new Promise((r) => { const q = indexedDB.open('collab-tracker'); q.onsuccess = () => r(q.result); });
+  const c = await new Promise((r) => { const g = db.transaction('collabs').objectStore('collabs').getAll(); g.onsuccess = () => r(g.result[0]); });
+  c.compensation[0] = { ...c.compensation[0], status: 'invoiced', paidAt: undefined, dueDate: iso };
+  await new Promise((r) => { const t = db.transaction('collabs', 'readwrite'); t.objectStore('collabs').put(c); t.oncomplete = r; });
+});
+await page.goto(`${BASE}/calendar`);
+await page.getByText('Payment due').first().waitFor();
+await page.getByRole('button', { name: 'Mark paid' }).first().click();
+await page.getByText(/marked paid/).waitFor();
+await page.getByText('Payment received').first().waitFor();
+step('calendar shows payment due and marks it paid');
+await shot(page, '04-calendar');
+
+// 10. Reports: totals render and the CSV downloads.
+await page.goto(`${BASE}/reports`);
+await page.getByText('Earned in period').waitFor();
+const [csv] = await Promise.all([page.waitForEvent('download'), page.getByRole('button', { name: 'Payments CSV' }).click()]);
+const csvText = readFileSync(await csv.path(), 'utf8');
+assert.match(csvText, /Orbit Energy/);
+assert.match(csvText, /2500/);
+step('report generated and CSV exported');
+await shot(page, '05-report');
+
 await context.setOffline(false);
 assert.deepEqual(errors, [], `page errors: ${errors.join('\n')}`);
 await browser.close();
