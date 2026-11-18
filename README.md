@@ -54,14 +54,25 @@ npm run test:e2e     # offline smoke test against `npm run preview` (needs the `
 
 `npm run icons` regenerates the PNG icons from `public/icons/favicon.svg`.
 
-## Deploying
+## Deploying (free) and installing on your phone
 
-`dist/` is a static site; host it on any static host (Netlify, Vercel, Cloudflare Pages, GitHub Pages behind a custom domain, S3…). Requirements:
+The build is a static site: no server or database is needed. `vercel.json` and `netlify.toml` are already set up: they handle the build, deep links and service-worker caching, and pin Node 22.
 
-- Serve over **HTTPS**, which service workers require.
-- Use an **SPA fallback** to `index.html` for unknown paths so deep links work on the first visit. After that, the service worker handles them offline.
-- Don't cache `sw.js` long-term (`Cache-Control: no-cache`), so updates are picked up.
-- The app assumes it is served from the domain root (`/`).
+**Vercel (recommended)**
+1. Sign in at vercel.com with GitHub → **Add New… → Project** → import this repository.
+2. Leave the detected settings (Vite, `npm run build`, output `dist`) and press **Deploy**.
+3. You get an HTTPS link like `https://collab-tracker-xyz.vercel.app`. Every push to the production branch redeploys automatically.
+
+**Netlify (alternative):** **Add new site → Import an existing project** → pick the repository. `netlify.toml` fills in everything else.
+
+Both deploy the repository's default branch (`main`) unless you pick another branch in the project settings.
+
+**Install on your phone**
+- **iPhone:** open the link in **Safari** → **Share** → **Add to Home Screen** → **Add**. (Other iOS browsers can't install web apps the same way.)
+- **Android:** open the link in **Chrome** → tap **Install** on the in-app banner, or ⋮ menu → **Install app**.
+- Open the app once while online so it can store itself; after that it works offline.
+
+**Data stays on each device.** The phone and your computer each keep their own separate data; nothing syncs. To move data, use **Settings → Export JSON backup** on one device and **Restore from file** on the other. The deployed link is public, but each visitor only sees their own (empty) local data.
 
 ## Architecture
 
