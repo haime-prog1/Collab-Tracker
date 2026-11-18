@@ -17,3 +17,5 @@ collab-tracker-*.csv
 /backups/
 /exports/
 /reports/
+.vercel
+.env*
