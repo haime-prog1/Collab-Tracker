@@ -17,7 +17,11 @@ if (SHOTS) mkdirSync(SHOTS, { recursive: true });
 const shot = (page, name) => SHOTS && page.screenshot({ path: `${SHOTS}/${name}.png` });
 const step = (m) => console.log(`✓ ${m}`);
 
-const browser = await chromium.launch(process.env.PLAYWRIGHT_CHROMIUM ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM } : {});
+const launch = {};
+if (process.env.PLAYWRIGHT_CHROMIUM) launch.executablePath = process.env.PLAYWRIGHT_CHROMIUM;
+// Testing a deployed URL from behind an HTTPS proxy: E2E_PROXY=$HTTPS_PROXY node e2e/offline-smoke.mjs https://…
+if (process.env.E2E_PROXY) launch.proxy = { server: process.env.E2E_PROXY };
+const browser = await chromium.launch(launch);
 const context = await browser.newContext({ ...devices['iPhone 14'], acceptDownloads: true });
 context.setDefaultTimeout(15000);
 const page = await context.newPage();

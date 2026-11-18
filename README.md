@@ -56,7 +56,7 @@ npm run test:e2e     # offline smoke test against `npm run preview` (needs the `
 
 ## Deploying (free) and installing on your phone
 
-The build is a static site: no server or database is needed. `vercel.json` and `netlify.toml` are already set up: they handle the build, deep links and service-worker caching, and pin Node 22.
+The build is a static site: no server or database is needed. `vercel.json` and `netlify.toml` are already set up: they handle the build, deep links and service-worker caching, and pin Node 22.x.
 
 **Vercel (recommended)**
 1. Sign in at vercel.com with GitHub → **Add New… → Project** → import this repository.
